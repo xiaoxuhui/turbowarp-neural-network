@@ -1,0 +1,17 @@
+✔ initial state and reset clear samples, epochs and predictions (6.4566ms)
+✔ finite numeric input, decimals, negative and range boundaries (0.2359ms)
+✔ backpropagation agrees with independent finite differences (0.3773ms)
+✔ learns retained examples and predicts held-out interpolation (8.1467ms)
+✔ prediction is read-only and repeats identically (1.029ms)
+✔ invalid or untrained requests cannot silently mutate a model (0.4679ms)
+✔ duplicate input replaces its target without forgetting other inputs (2.8756ms)
+✔ reset allows learning a different rule (1.1864ms)
+✔ sample limit is transactional but existing inputs can be updated (2.3819ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 176.8508
