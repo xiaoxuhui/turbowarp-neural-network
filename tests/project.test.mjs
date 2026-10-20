@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import JSZip from 'jszip';
 import crypto from 'node:crypto';
+import fs from 'node:fs/promises';
 import {build,project} from '../src/build-project.mjs';
 
 test('valid SB3 contains every referenced block, variable, list and asset',async()=>{
@@ -23,4 +24,11 @@ test('three clickable buttons, keyboard shortcuts and real backprop procedure ex
   const prototypes=Object.values(project.targets[1].blocks).filter(b=>b.opcode==='procedures_prototype');
   for(const name of ['前向计算 %s','训练一批 %s','检查数字 %s','清空并重置'])assert(prototypes.some(b=>b.mutation.proccode===name));
   assert(Object.values(project.targets[1].blocks).filter(b=>b.opcode==='data_replaceitemoflist').length>=5);
+});
+test('package, visible stage and changelog carry the same version',async()=>{
+  const version=JSON.parse(await fs.readFile(new URL('../package.json',import.meta.url),'utf8')).version;
+  const zip=await JSZip.loadAsync(await build());
+  const asset=project.targets[0].costumes[0].md5ext;
+  assert((await zip.file(asset).async('string')).includes(`v${version}`));
+  assert((await fs.readFile(new URL('../CHANGELOG.md',import.meta.url),'utf8')).includes(`## ${version}`));
 });

@@ -1,0 +1,72 @@
+{
+  "status": "PASS",
+  "checkedAt": "2026-10-20T15:52:12.579Z",
+  "checks": [
+    "原生测试快捷键 3：1.5 → 3.0692，权重不变",
+    "原生重置快捷键 1：样本、轮次和预测清空",
+    "原生训练快捷键 2：-1 → -2，600 轮完成"
+  ],
+  "editorUrl": "https://turbowarp.org/editor",
+  "evidence": [
+    {
+      "tool": "browser_tabs",
+      "isError": false,
+      "result": "### Result\n- 0: [TurboWarp - Run Scratch projects faster](https://turbowarp.org/editor)\n- 1: (current) [TurboWarp - Run Scratch projects faster](https://turbowarp.org/editor)\n"
+    },
+    {
+      "tool": "browser_evaluate",
+      "isError": false,
+      "result": "### Result\n{\n  \"samples\": 3,\n  \"prediction\": 3.0692,\n  \"epochs\": 1800,\n  \"targets\": [\n    \"Stage\",\n    \"神经网络\",\n    \"重置按钮\",\n    \"训练按钮\",\n    \"测试按钮\"\n  ]\n}\n"
+    },
+    {
+      "tool": "browser_evaluate",
+      "isError": false,
+      "result": "### Result\n{\n  \"status\": \"PASS\",\n  \"shortcut\": \"3\",\n  \"input\": 1.5,\n  \"prediction\": 3.0692,\n  \"modelUnchanged\": true\n}\n"
+    },
+    {
+      "tool": "browser_press_key",
+      "isError": false,
+      "result": ""
+    },
+    {
+      "tool": "browser_evaluate",
+      "isError": false,
+      "result": "### Result\n{\n  \"status\": \"PASS\",\n  \"shortcut\": \"1\",\n  \"samples\": 0,\n  \"epochs\": 0,\n  \"prediction\": \"—\"\n}\n"
+    },
+    {
+      "tool": "browser_press_key",
+      "isError": false,
+      "result": ""
+    },
+    {
+      "tool": "browser_fill_form",
+      "isError": false,
+      "result": ""
+    },
+    {
+      "tool": "browser_press_key",
+      "isError": false,
+      "result": ""
+    },
+    {
+      "tool": "browser_wait_for",
+      "isError": false,
+      "result": "### Result\nWaited for 对应的目标输出 y 是多少？\n"
+    },
+    {
+      "tool": "browser_fill_form",
+      "isError": false,
+      "result": ""
+    },
+    {
+      "tool": "browser_press_key",
+      "isError": false,
+      "result": ""
+    },
+    {
+      "tool": "browser_evaluate",
+      "isError": false,
+      "result": "### Result\n{\n  \"status\": \"PASS\",\n  \"shortcut\": \"2\",\n  \"samples\": 1,\n  \"epochs\": 600,\n  \"MSE\": 0\n}\n"
+    }
+  ]
+}

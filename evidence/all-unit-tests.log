@@ -1,0 +1,46 @@
+✔ initial state and reset clear samples, epochs and predictions (4.7266ms)
+✔ finite numeric input, decimals, negative and range boundaries (0.1926ms)
+✔ backpropagation agrees with independent finite differences (0.251ms)
+✔ learns retained examples and predicts held-out interpolation (6.5729ms)
+✔ prediction is read-only and repeats identically (0.6748ms)
+✔ invalid or untrained requests cannot silently mutate a model (0.3062ms)
+✔ duplicate input replaces its target without forgetting other inputs (2.3001ms)
+✔ reset allows learning a different rule (0.9476ms)
+✔ sample limit is transactional but existing inputs can be updated (2.0024ms)
+{
+  "path": "dist/neural-network.sb3",
+  "bytes": 11336,
+  "sha256": "3db5118201a011d2b4592e6d907f24101c7b7d924e2488657fb49ce86c0b268b",
+  "targets": [
+    "舞台",
+    "神经网络",
+    "重置按钮",
+    "训练按钮",
+    "测试按钮"
+  ],
+  "blocks": 386
+}
+✔ valid SB3 contains every referenced block, variable, list and asset (38.6427ms)
+✔ three clickable buttons, keyboard shortcuts and real backprop procedure exist (0.5354ms)
+{
+  "path": "dist/neural-network.sb3",
+  "bytes": 11336,
+  "sha256": "3db5118201a011d2b4592e6d907f24101c7b7d924e2488657fb49ce86c0b268b",
+  "targets": [
+    "舞台",
+    "神经网络",
+    "重置按钮",
+    "训练按钮",
+    "测试按钮"
+  ],
+  "blocks": 386
+}
+✔ package, visible stage and changelog carry the same version (16.2425ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 242.3269

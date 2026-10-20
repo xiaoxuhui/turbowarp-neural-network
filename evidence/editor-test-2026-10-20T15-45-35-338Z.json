@@ -1,0 +1,100 @@
+{
+  "startedAt": "2026-10-20T15:45:35.338Z",
+  "checks": [
+    {
+      "name": "U01 初始化及三个可见按钮",
+      "status": "PASS",
+      "detail": "Loaded real SB3; 6 hidden neurons; no samples"
+    },
+    {
+      "name": "U05 无样本测试提示",
+      "status": "PASS"
+    }
+  ],
+  "states": [
+    {
+      "label": "initial",
+      "variables": {
+        "状态": "已重置，请点击训练添加样本",
+        "忙碌": 0,
+        "样本数": 0,
+        "训练轮次": 0,
+        "均方误差": "—",
+        "测试输入": "—",
+        "预测输出": "—",
+        "最近样本": "—",
+        "j": 7,
+        "k": 0,
+        "valid": 0,
+        "tmpX": 0,
+        "tmpY": 0,
+        "sampleIndex": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "normalizedX": 0,
+        "normalizedY": 0,
+        "z": 0,
+        "exp2z": 0,
+        "pred": 0,
+        "dOut": 0,
+        "dHidden": 0,
+        "B2": 0,
+        "lossSum": 0,
+        "重置": "重置",
+        "训练": "训练",
+        "测试": "测试"
+      },
+      "lists": {
+        "样本X": [],
+        "样本Y": [],
+        "W1": [
+          -0.26,
+          0.48,
+          -0.8,
+          -0.06,
+          0.68,
+          -0.6
+        ],
+        "B1": [
+          0.04,
+          -0.08,
+          0.11,
+          -0.01,
+          -0.13,
+          0.06
+        ],
+        "W2": [
+          -0.06,
+          0.11,
+          -0.19,
+          -0.02,
+          0.15,
+          -0.15
+        ],
+        "H": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "b2": 0,
+      "compileErrors": []
+    }
+  ],
+  "errors": [],
+  "console": [
+    {
+      "level": "warning",
+      "text": "Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true. See: https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently"
+    }
+  ],
+  "status": "FAIL",
+  "error": {
+    "message": "locator.waitFor: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[class*=\"question\"]') to be visible\u001b[22m\n",
+    "stack": "locator.waitFor: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[class*=\"question\"]') to be visible\u001b[22m\n\n    at answer (D:\\soft\\turbowarp-neural-network\\scripts\\test-editor.mjs:31:95)\n    at D:\\soft\\turbowarp-neural-network\\scripts\\test-editor.mjs:49:35"
+  },
+  "finishedAt": "2026-10-20T15:45:54.627Z"
+}

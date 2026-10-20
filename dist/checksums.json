@@ -1,0 +1,10 @@
+[
+  {
+    "file": "neural-network.sb3",
+    "sha256": "3db5118201a011d2b4592e6d907f24101c7b7d924e2488657fb49ce86c0b268b"
+  },
+  {
+    "file": "neural-network-trained-example.sb3",
+    "sha256": "90f6e6a3b030c81ed4e18e9fa0054597fbe2fae5f62df8ec0f9c56530a78d197"
+  }
+]

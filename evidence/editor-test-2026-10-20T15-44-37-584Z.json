@@ -1,0 +1,57 @@
+{
+  "startedAt": "2026-10-20T15:44:37.584Z",
+  "checks": [],
+  "states": [
+    {
+      "label": "initial",
+      "variables": {
+        "状态": "点击训练，给网络一组输入和输出",
+        "忙碌": 0,
+        "样本数": 0,
+        "训练轮次": 0,
+        "均方误差": "—",
+        "测试输入": "—",
+        "预测输出": "—",
+        "最近样本": "—",
+        "j": 0,
+        "k": 0,
+        "valid": 0,
+        "tmpX": 0,
+        "tmpY": 0,
+        "sampleIndex": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "normalizedX": 0,
+        "normalizedY": 0,
+        "z": 0,
+        "exp2z": 0,
+        "pred": 0,
+        "dOut": 0,
+        "dHidden": 0,
+        "B2": 0,
+        "lossSum": 0,
+        "重置": "重置",
+        "训练": "训练",
+        "测试": "测试"
+      },
+      "lists": {
+        "样本X": [],
+        "样本Y": [],
+        "W1": [],
+        "B1": [],
+        "W2": [],
+        "H": []
+      },
+      "b2": 0,
+      "compileErrors": []
+    }
+  ],
+  "errors": [],
+  "console": [],
+  "status": "FAIL",
+  "error": {
+    "message": "Expected values to be strictly equal:\n\n0 !== 6\n",
+    "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 6\n\n    at file:///D:/soft/turbowarp-neural-network/scripts/test-editor.mjs:41:85"
+  },
+  "finishedAt": "2026-10-20T15:44:46.124Z"
+}
