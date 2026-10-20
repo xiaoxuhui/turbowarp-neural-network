@@ -1,0 +1,23 @@
+{
+  "path": "dist/neural-network.sb3",
+  "bytes": 11335,
+  "sha256": "54b928b32d959c6a50aeb580fe31efa744b190e45e02cac7df9bda8f6abbdf6f",
+  "targets": [
+    "舞台",
+    "神经网络",
+    "重置按钮",
+    "训练按钮",
+    "测试按钮"
+  ],
+  "blocks": 386
+}
+✔ valid SB3 contains every referenced block, variable, list and asset (35.8192ms)
+✔ three clickable buttons, keyboard shortcuts and real backprop procedure exist (0.5068ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 187.332
