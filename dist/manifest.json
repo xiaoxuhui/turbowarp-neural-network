@@ -1,7 +1,7 @@
 {
   "path": "dist/neural-network.sb3",
-  "bytes": 11335,
-  "sha256": "54b928b32d959c6a50aeb580fe31efa744b190e45e02cac7df9bda8f6abbdf6f",
+  "bytes": 11336,
+  "sha256": "3db5118201a011d2b4592e6d907f24101c7b7d924e2488657fb49ce86c0b268b",
   "targets": [
     "舞台",
     "神经网络",
