@@ -1,0 +1,13 @@
+{
+  "path": "dist/neural-network.sb3",
+  "bytes": 11335,
+  "sha256": "54b928b32d959c6a50aeb580fe31efa744b190e45e02cac7df9bda8f6abbdf6f",
+  "targets": [
+    "舞台",
+    "神经网络",
+    "重置按钮",
+    "训练按钮",
+    "测试按钮"
+  ],
+  "blocks": 386
+}
