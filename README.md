@@ -14,6 +14,8 @@
 
 **dist/neural-network-trained-example.sb3** 是已经训练上述样本的演示存档。导入后可直接点“测试”；点击绿旗或重置会清空本轮模型。
 
+当前 **dist/neural-network.sb3** 保留了另一轮本地训练成果：样本为 `2 → 4`、`3 → 6`、`1 → 2`，训练轮次为 2400。可直接测试；点击绿旗或重置会清空模型。源码构建和 `tests/project.test.mjs` 会重新生成初始作品并覆盖这个文件，需要保留训练成果时请先另存 SB3。
+
 作品只用标准 Scratch 积木，无扩展、网络调用或外部模型；已在 TurboWarp 实测，Scratch 官网兼容性尚未单独测试。测试、指标、造型和网络计算都保存在 SB3 中。
 
 ## 本地构建与验证
@@ -29,4 +31,4 @@ node scripts/test-editor.mjs
 
 数值基准在 src/network.mjs；实际作品计算由 src/build-project.mjs 生成的原生积木执行。测试会把二者的全部权重作数值比较。过程与证据见 doc/、evidence/。构建产物 manifest 包含 SHA-256，可重新生成与核对。
 
-所有变更仅在本地 Git 保存；没有创建远端、推送或发布。
+源码和作品已通过私有 GitHub 仓库备份：<https://github.com/xiaoxuhui/turbowarp-neural-network>。日常在本目录的 `main` 分支提交并推送；尚未发布网页、独立 APK 或游戏大厅资源。
