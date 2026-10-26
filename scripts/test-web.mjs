@@ -20,7 +20,7 @@ try{
  page.on('pageerror',e=>report.errors.push(String(e)));
  await page.route('**/*',route=>{const u=route.request().url();if(u.startsWith(origin)||u.startsWith('data:')||u.startsWith('blob:'))return route.continue();report.externalRequests.push(u);return route.abort();});
  await page.goto(origin,{waitUntil:'load'});
- await page.waitForFunction(()=>window.vm?.runtime?.getTargetForStage()?.variables?.v_忙碌?.value===0&&vm.runtime.getTargetForStage().variables.l_W1.value.length===6);
+ await page.waitForFunction(()=>window.hall?.ready===true);
  const state=()=>page.evaluate(()=>Object.fromEntries(Object.entries(vm.runtime.getTargetForStage().variables).map(([id,v])=>[id,v.value])));
  const point=async(x,y)=>{const r=await page.locator('canvas').first().boundingBox();await page.mouse.click(r.x+(x+240)/480*r.width,r.y+(180-y)/360*r.height);};
  await point(-154,-128); // Existing reset sprite.
@@ -30,10 +30,39 @@ try{
  await point(154,-128);await answer(1.5);await page.waitForFunction(()=>vm.runtime.getTargetForStage().variables.v_忙碌.value===0);
  const predicted=await state();assert(Math.abs(Number(predicted.v_预测输出)-3)<.35);assert.deepEqual(predicted.l_W1,trained.l_W1);assert.deepEqual(predicted.l_W2,trained.l_W2);
  report.checks.push({name:'original SB3 real mouse train/predict with all external requests blocked',prediction:predicted.v_预测输出});
+ await page.waitForFunction(()=>JSON.parse(localStorage.getItem(hall.storageKey))?.variables.v_训练轮次===1800);
+ await page.reload();await page.waitForFunction(()=>window.hall?.ready===true);
+ const restored=await state();assert.deepEqual(restored.l_样本X,trained.l_样本X);assert.deepEqual(restored.l_W1,trained.l_W1);assert.equal(restored.v_训练轮次,1800);
+ report.checks.push({name:'reload restores complete model and samples'});
+ const saved=await page.evaluate(()=>localStorage.getItem(hall.storageKey));
+ await point(0,-128);await page.locator('input').filter({visible:true}).first().waitFor({state:'visible'});
+ assert.equal(await page.evaluate(()=>localStorage.getItem(hall.storageKey)),saved);
+ await page.reload();await page.waitForFunction(()=>window.hall?.ready===true);assert.deepEqual((await state()).l_W1,trained.l_W1);
+ report.checks.push({name:'interrupted input retains last complete model'});
+ await page.evaluate(()=>localStorage.setItem(hall.storageKey,'{broken'));
+ await page.reload();await page.waitForFunction(()=>window.hall?.ready===true);
+ assert.equal(await page.evaluate(()=>localStorage.getItem(hall.storageKey)),'{broken');
+ assert.match(await page.locator('#hall-banner').innerText(),/原数据已保留/);
+ assert.equal(await page.evaluate(()=>hall.save()),false);
+ await page.evaluate(raw=>localStorage.setItem(hall.storageKey,raw),saved);
+ await page.reload();await page.waitForFunction(()=>window.hall?.ready===true);
+ report.checks.push({name:'corrupt save remains unchanged and blocks automatic replacement'});
  assert.deepEqual(report.errors,[]);assert.deepEqual(report.externalRequests,[]);
  await page.screenshot({path:path.join(root,'evidence/web-desktop.png')});
  await page.setViewportSize({width:390,height:844});
  await page.screenshot({path:path.join(root,'evidence/web-mobile.png')});
  report.checks.push({name:'desktop and narrow viewport screenshots'});
+ const touchContext=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,locale:'zh-CN'});
+ const mobile=await touchContext.newPage();mobile.on('pageerror',e=>report.errors.push(String(e)));
+ await mobile.route('**/*',route=>{const u=route.request().url();if(u.startsWith(origin)||u.startsWith('data:')||u.startsWith('blob:'))return route.continue();report.externalRequests.push(u);return route.abort();});
+ await mobile.goto(origin);await mobile.waitForFunction(()=>window.hall?.ready===true);
+ const tap=async(x,y)=>{const r=await mobile.locator('canvas').first().boundingBox();await mobile.touchscreen.tap(r.x+(x+240)/480*r.width,r.y+(180-y)/360*r.height);};
+ await tap(-154,-128);await tap(0,-128);
+ for(const n of ['1','2']){const input=mobile.locator('input').filter({visible:true}).first();await input.waitFor({state:'visible'});assert.equal(await input.getAttribute('inputmode'),'decimal');await input.fill(n);await input.press('Enter');}
+ await mobile.waitForFunction(()=>vm.runtime.getTargetForStage().variables.v_忙碌.value===0);
+ assert.equal(await mobile.evaluate(()=>vm.runtime.getTargetForStage().variables.v_样本数.value),1);
+ await mobile.screenshot({path:path.join(root,'evidence/web-touch.png')});await touchContext.close();
+ report.checks.push({name:'real mobile touch reset/train and decimal keyboard hint'});
+ assert.deepEqual(report.errors,[]);assert.deepEqual(report.externalRequests,[]);
  console.log(JSON.stringify(report,null,2));
 }finally{if(browser)await browser.close();await new Promise(r=>server.close(r));await fs.writeFile(path.join(root,'evidence/web-test.json'),JSON.stringify(report,null,2)+'\n');}

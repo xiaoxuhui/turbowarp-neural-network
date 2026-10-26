@@ -28,6 +28,7 @@ for(const key of ['css','js']){
   try{packager.options.custom[key]=await fs.readFile(path.join(root,'web/adapter.'+key),'utf8');}
   catch(error){if(error.code!=='ENOENT')throw error;}
 }
+packager.options.custom.js='window.__hallConfig='+JSON.stringify(config)+';\n'+await fs.readFile(path.join(root,'web/state.cjs'),'utf8')+'\n'+packager.options.custom.js;
 const result=await packager.package();
 if(result.type!=='text/html')throw Error('Expected self-contained HTML');
 if(hash(await fs.readFile(path.join(root,config.project)))!==before)throw Error('Original SB3 changed during packaging');
