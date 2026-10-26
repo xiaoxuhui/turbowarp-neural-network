@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "id": "turbowarp-neural-network",
+  "title": "神经网络实验室",
+  "version": "0.1.0",
+  "sourceProject": "dist/neural-network.sb3",
+  "sourceProjectSha256": "5bf639b4cefb61c27ba059d47a278dd860097cc0df787ee0762a498f65f33e34",
+  "sourceRevision": "23c33f6d76d487353350139deb38ca2d0ed0e77a",
+  "packagerVersion": "3.14.0",
+  "entryPage": "index.html",
+  "bytes": 1847197,
+  "sha256": "864494d936a6f388ac496d46e7a308093f8f49dcdeb46ceed3f13202927aeb18"
+}

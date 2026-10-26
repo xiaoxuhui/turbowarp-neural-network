@@ -1,0 +1,13 @@
+{
+  "checks": [
+    {
+      "name": "original SB3 real mouse train/predict with all external requests blocked",
+      "prediction": 3.0692
+    },
+    {
+      "name": "desktop and narrow viewport screenshots"
+    }
+  ],
+  "errors": [],
+  "externalRequests": []
+}
