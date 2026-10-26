@@ -6,7 +6,7 @@ import fs from 'node:fs/promises';
 import {build,project} from '../src/build-project.mjs';
 
 test('valid SB3 contains every referenced block, variable, list and asset',async()=>{
-  const bytes=await build(),zip=await JSZip.loadAsync(bytes,{checkCRC32:true});
+  const bytes=await build({write:false}),zip=await JSZip.loadAsync(bytes,{checkCRC32:true});
   assert.equal(project.targets.length,5);assert.equal(project.extensions.length,0);
   const vars=new Set(Object.keys(project.targets[0].variables)),lists=new Set(Object.keys(project.targets[0].lists));
   for(const t of project.targets){
@@ -27,8 +27,16 @@ test('three clickable buttons, keyboard shortcuts and real backprop procedure ex
 });
 test('package, visible stage and changelog carry the same version',async()=>{
   const version=JSON.parse(await fs.readFile(new URL('../package.json',import.meta.url),'utf8')).version;
-  const zip=await JSZip.loadAsync(await build());
+  const zip=await JSZip.loadAsync(await build({write:false}));
   const asset=project.targets[0].costumes[0].md5ext;
   assert((await zip.file(asset).async('string')).includes(`v${version}`));
   assert((await fs.readFile(new URL('../CHANGELOG.md',import.meta.url),'utf8')).includes(`## ${version}`));
+});
+
+test('in-memory structure checks never overwrite saved training artifacts',async()=>{
+  const names=['neural-network.sb3','manifest.json','project.json','checksums.json'];
+  const before=await Promise.all(names.map(n=>fs.readFile(new URL('../dist/'+n,import.meta.url))));
+  await build({write:false});
+  const after=await Promise.all(names.map(n=>fs.readFile(new URL('../dist/'+n,import.meta.url))));
+  assert.deepEqual(after,before);
 });

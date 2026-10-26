@@ -108,12 +108,12 @@ const buttons=['重置','训练','测试'].map((name,i)=>{
 });
 const monitor=(name,x,y,mode='default')=>({id:variableId(name),mode,opcode:'data_variable',params:{VARIABLE:name},spriteName:null,value:variables[name],width:0,height:0,x,y,visible:true,sliderMin:0,sliderMax:100,isDiscrete:true});
 export const project={targets:[stage,controller,...buttons],monitors:[monitor('样本数',21,69),monitor('训练轮次',132,69),monitor('均方误差',285,69),monitor('测试输入',307,132,'large'),monitor('预测输出',307,179,'large'),monitor('最近样本',295,215),monitor('状态',18,253)],extensions:[],meta:{semver:'3.0.0',vm:'0.2.0',agent:'TurboWarp Neural Network Lab 0.1.0'}};
-export async function build(){
+export async function build({write=true}={}){
   zip.file('project.json',JSON.stringify(project),{date:new Date('2026-01-01T00:00:00Z')});
   const bytes=await zip.generateAsync({type:'nodebuffer',compression:'DEFLATE'});
-  await fs.writeFile(path.join(ROOT,'dist/neural-network.sb3'),bytes);
-  await fs.writeFile(path.join(ROOT,'dist/project.json'),JSON.stringify(project,null,2));
+  if(write)await fs.writeFile(path.join(ROOT,'dist/neural-network.sb3'),bytes);
+  if(write)await fs.writeFile(path.join(ROOT,'dist/project.json'),JSON.stringify(project,null,2));
   const summary={path:'dist/neural-network.sb3',bytes:bytes.length,sha256:crypto.createHash('sha256').update(bytes).digest('hex'),targets:project.targets.map(t=>t.name),blocks:project.targets.reduce((n,t)=>n+Object.keys(t.blocks).length,0)};
-  await fs.writeFile(path.join(ROOT,'dist/manifest.json'),JSON.stringify(summary,null,2));console.log(JSON.stringify(summary,null,2));return bytes;
+  if(write)await fs.writeFile(path.join(ROOT,'dist/manifest.json'),JSON.stringify(summary,null,2));if(write)console.log(JSON.stringify(summary,null,2));return bytes;
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url))await build();

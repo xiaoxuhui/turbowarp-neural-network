@@ -1,0 +1,6 @@
+{
+  "id": "turbowarp-neural-network",
+  "title": "神经网络实验室",
+  "version": "0.1.0",
+  "project": "dist/neural-network.sb3"
+}
