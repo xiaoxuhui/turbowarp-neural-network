@@ -5,7 +5,19 @@
       "prediction": 3.0692
     },
     {
+      "name": "reload restores complete model and samples"
+    },
+    {
+      "name": "interrupted input retains last complete model"
+    },
+    {
+      "name": "corrupt save remains unchanged and blocks automatic replacement"
+    },
+    {
       "name": "desktop and narrow viewport screenshots"
+    },
+    {
+      "name": "real mobile touch reset/train and decimal keyboard hint"
     }
   ],
   "errors": [],

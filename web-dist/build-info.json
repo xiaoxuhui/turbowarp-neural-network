@@ -5,9 +5,9 @@
   "version": "0.1.0",
   "sourceProject": "dist/neural-network.sb3",
   "sourceProjectSha256": "5bf639b4cefb61c27ba059d47a278dd860097cc0df787ee0762a498f65f33e34",
-  "sourceRevision": "23c33f6d76d487353350139deb38ca2d0ed0e77a",
+  "sourceRevision": "97373eddb81a7681b3d319fb502bbea38e8bcce5",
   "packagerVersion": "3.14.0",
   "entryPage": "index.html",
-  "bytes": 1847197,
-  "sha256": "864494d936a6f388ac496d46e7a308093f8f49dcdeb46ceed3f13202927aeb18"
+  "bytes": 1855365,
+  "sha256": "8a275983d47d6f654cb84d088dd6ce8a81395427df3ca2c9a204dfd210656d75"
 }

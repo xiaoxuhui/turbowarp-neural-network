@@ -32,3 +32,12 @@ node scripts/test-editor.mjs
 数值基准在 src/network.mjs；实际作品计算由 src/build-project.mjs 生成的原生积木执行。测试会把二者的全部权重作数值比较。过程与证据见 doc/、evidence/。构建产物 manifest 包含 SHA-256，可重新生成与核对。
 
 源码和作品已通过私有 GitHub 仓库备份：<https://github.com/xiaoxuhui/turbowarp-neural-network>。日常在本目录的 `main` 分支提交并推送；尚未发布网页、独立 APK 或游戏大厅资源。
+
+
+## 游戏大厅离线网页版
+
+`web-dist/index.html` 由已有 SB3 和固定版本 TurboWarp Packager 生成，直接离线打开即可；算法、舞台及操作仍由原生积木执行。运行不依赖 TurboWarp 网站。手机可触摸操作；神经网络问答提供数字键盘提示。完成操作后自动保存到本机，输入或训练未完成时保留上一份完整存档。损坏存档不会被自动替换。
+
+`node scripts/build-web.mjs` 只生成 web-dist，不覆盖原 SB3；`node scripts/test-web.mjs` 在独立浏览器阻断外网进行真实鼠标、触摸、恢复及错误态验证。测试复用 Bridge 的浏览器工具链，不修改 Bridge 的配置。
+
+大厅接入身份见 game-hub.integration.json，当前资源协议 2、桥协议 1。源仓库保持私有；大厅仅分发 web-dist 内有明确许可的运行资源，不包含开发日志或机器配置。不制作独立 APK。大厅登记与发行进展见 doc/大厅网页接入实施计划.md。

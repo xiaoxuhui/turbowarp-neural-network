@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "turbowarp-neural-network",
+  "displayName": "神经网络实验室",
+  "version": "0.1.0",
+  "directory": "web-dist",
+  "entryPage": "index.html",
+  "files": [
+    "LICENSE",
+    "MPL-2.0.txt",
+    "THIRD_PARTY_NOTICES.md",
+    "build-info.json",
+    "index.html",
+    "scaffolding-min.js.LICENSE.txt"
+  ],
+  "license": "MIT (own project); bundled runtime retains third-party licenses",
+  "storageContract": "turbowarp-neural-network-dynamic-v1",
+  "storageKeys": [
+    "turbowarp-neural-network.state.v1"
+  ],
+  "storagePrefix": "turbowarp-neural-network.",
+  "minHostVersionCode": 4,
+  "resourceProtocol": 2,
+  "bridgeProtocol": 1,
+  "offline": true
+}

@@ -140,7 +140,13 @@
     .sc-monitor-row-value-editing .sc-monitor-row-value-outer {
       background-color: #e25b27;
     }
-    
+    #hall-banner{position:fixed;top:max(8px,env(safe-area-inset-top));left:10px;right:10px;min-height:32px;display:flex;align-items:center;justify-content:center;gap:10px;z-index:20;color:#455570;font:14px/1.4 system-ui,sans-serif;text-align:center}
+#hall-banner button{padding:8px 12px;min-height:40px;border:1px solid #b9c4da;border-radius:8px;background:#fff;color:#17253f;font:inherit}
+#app{top:54px!important;height:calc(100% - 62px)!important}
+.sc-question-input{font-size:16px!important;min-height:40px!important;box-sizing:border-box}
+.sc-question-inner{padding:10px!important}
+@media(max-height:450px){#hall-banner{font-size:12px;top:4px;min-height:24px}#app{top:36px!important;height:calc(100% - 40px)!important}}
+
   </style>
   <meta name="theme-color" content="#f4f5fb">
   
@@ -288,7 +294,105 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
       handleError(e);
     }
   </script>
-  
+  <script>
+    try {
+      window.__hallConfig={"id":"turbowarp-neural-network","title":"神经网络实验室","version":"0.1.0","kind":"neural","project":"dist/neural-network.sb3"};
+(function(root){
+ 'use strict';
+ const clone=value=>JSON.parse(JSON.stringify(value));
+ function validate(data,config,template){
+  if(!data||data.schemaVersion!==1||data.id!==config.id||data.contract!==config.id+'-dynamic-v1'||!data.variables||Array.isArray(data.variables))throw Error('存档版本或项目不匹配');
+  const keys=Object.keys(template).sort();
+  if(JSON.stringify(Object.keys(data.variables).sort())!==JSON.stringify(keys))throw Error('存档字段不完整');
+  const scalar=v=>typeof v==='boolean'||typeof v==='number'&&Number.isFinite(v)||typeof v==='string'&&v.length<=256;
+  for(const id of keys){const value=data.variables[id];if(Array.isArray(template[id])){if(!Array.isArray(value)||value.length>512||!value.every(scalar))throw Error('存档列表无效');}else if(!scalar(value)||Array.isArray(value))throw Error('存档数值无效');}
+  const v=data.variables;
+  if(Number(v.v_忙碌)!==0)throw Error('存档来自未完成操作');
+  if(config.kind==='neural'){
+   const xs=v.l_样本X,ys=v.l_样本Y;
+   if(xs.length!==ys.length||xs.length>32||xs.some(x=>!Number.isFinite(Number(x))||Math.abs(Number(x))>1000)||ys.some(x=>!Number.isFinite(Number(x))||Math.abs(Number(x))>1000))throw Error('训练样本无效');
+   if(Number(v.v_样本数)!==xs.length||!Number.isSafeInteger(Number(v.v_训练轮次))||Number(v.v_训练轮次)<0)throw Error('训练记录不一致');
+   for(const n of ['l_W1','l_B1','l_W2','l_H'])if(v[n].length!==6||v[n].some(x=>!Number.isFinite(Number(x))))throw Error('模型权重无效');
+   if(!Number.isFinite(Number(v.v_B2))||!Number.isFinite(Number(v.v_scaleX))||!Number.isFinite(Number(v.v_scaleY))||!(Number(v.v_scaleX)>0)||!(Number(v.v_scaleY)>0))throw Error('模型缩放无效');
+  }else{
+   for(const [n,max] of [['T',6],['A',24],['B',24],['Q',1]])if(v['l_'+n].length!==24||v['l_'+n].some(x=>!Number.isInteger(Number(x))||Number(x)<0||Number(x)>max))throw Error('电路数据无效');
+   if(Number(v.v_来源)!==0)throw Error('存档含未完成连线');
+   for(const n of ['U_T','U_A','U_B','U_Q'])if(v['l_'+n].length!==(Number(v.v_可撤销)===1?24:0)&&v['l_'+n].length!==24)throw Error('撤销快照无效');
+   const marks=Array(24).fill(0);
+   const visit=i=>{if(marks[i]===1)throw Error('电路含反馈');if(marks[i]===2)return;marks[i]=1;const type=Number(v.l_T[i]);if(type>=2){const ports=[v.l_A[i]];if([2,4,5].includes(type))ports.push(v.l_B[i]);for(const p of ports)if(Number(p)){if(!Number(v.l_T[Number(p)-1]))throw Error('电路来源为空');visit(Number(p)-1);}}marks[i]=2;};
+   for(let i=0;i<24;i++)visit(i);
+  }
+  return data;
+ }
+ function parse(raw,config,template){if(typeof raw!=='string'||raw.length>100000)throw Error('存档大小无效');return validate(JSON.parse(raw),config,template);}
+ const api={clone,validate,parse};
+ if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.TurboHallState=api;
+})(typeof window==='undefined'?globalThis:window);
+
+(() => {
+ 'use strict';
+ const config=window.__hallConfig,codec=window.TurboHallState,scaffolding=window.scaffolding,vm=scaffolding.vm;
+ const key=config.id+'.state.v1';
+ const banner=document.createElement('div');banner.id='hall-banner';
+ const status=document.createElement('span');status.role='status';status.textContent='正在恢复进度…';
+ const restart=document.createElement('button');restart.type='button';restart.textContent='从原始作品重新开始';restart.hidden=true;
+ banner.append(status,restart);document.body.append(banner);
+ let ready=false,locked=false,last='',template,initial,booting=false,storageError=false;
+ const stage=()=>vm.runtime.getTargetForStage();
+ const values=()=>Object.fromEntries(Object.entries(stage().variables).map(([id,v])=>[id,codec.clone(v.value)]));
+ const idle=()=>stage()&&Number(stage().variables.v_忙碌.value)===0&&(config.kind!=='logic'||Number(stage().variables.v_来源.value)===0);
+ const normalized=()=>{const v=values();if(config.kind==='logic'){v.v_清空时刻=-10;v.v_动作=0;}return v;};
+ function save(){
+  if(!ready||locked||!idle())return false;
+  const variables=normalized(),encoded=JSON.stringify(variables);
+  if(encoded===last)return true;
+  try{
+   const data={schemaVersion:1,id:config.id,contract:config.id+'-dynamic-v1',variables};codec.validate(data,config,template);
+   localStorage.setItem(key,JSON.stringify(data));last=encoded;status.textContent='进度已自动保存在本机';storageError=false;return true;
+  }catch(error){status.textContent='暂时无法保存进度，请保留当前页面';storageError=true;return false;}
+ }
+ async function settle(){
+  const deadline=performance.now()+10000;await new Promise(r=>setTimeout(r,120));
+  while(!idle()||(config.kind==='logic'&&vm.runtime.targets.filter(t=>!t.isOriginal).length!==24)){
+   if(performance.now()>deadline)throw Error('作品初始化超时');await new Promise(r=>setTimeout(r,30));
+  }
+ }
+ async function apply(data){
+  codec.validate(data,config,template);
+  for(const [id,value] of Object.entries(data.variables))stage().variables[id].value=codec.clone(value);
+  if(config.kind==='logic'){
+   stage().variables.v_动作.value=Math.max(1,Math.min(6,Number(stage().variables.v_工具.value)||2));
+   vm.runtime.startHats('event_whenbroadcastreceived',{BROADCAST_OPTION:'工具点击'});await settle();
+  }
+ }
+ const originalStart=scaffolding.start.bind(scaffolding);
+ scaffolding.start=()=>{
+  if(booting)return;booting=true;
+  initial={schemaVersion:1,id:config.id,contract:config.id+'-dynamic-v1',variables:values()};template=codec.clone(initial.variables);
+  let restore=initial;
+  try{const raw=localStorage.getItem(key);if(raw!==null)restore=codec.parse(raw,config,template);}
+  catch(error){locked=true;status.textContent='存档无法恢复，原数据已保留；可选择重新开始';restart.hidden=false;}
+  originalStart();
+  (async()=>{await settle();if(config.kind==='neural'&&initial.variables.l_W1.length===0)initial.variables=values();if(!locked)await apply(restore);ready=true;window.hall.ready=true;
+   if(!locked){last='';save();}
+   setInterval(save,200);vm.runtime.on('AFTER_EXECUTE',save);
+  })().catch(error=>{locked=true;status.textContent='作品恢复失败，原存档已保留';restart.hidden=false;window.hall.error=String(error);});
+ };
+ restart.addEventListener('click',async()=>{
+  if(!window.confirm('保留原存档的恢复副本，并从作品初始状态重新开始？'))return;
+  try{const raw=localStorage.getItem(key);if(raw!==null)localStorage.setItem(config.id+'.recovery.'+Date.now(),raw);await apply(initial);locked=false;restart.hidden=true;last='';save();}
+  catch(error){status.textContent='无法安全恢复，请保留当前页面和存档';}
+ });
+ window.addEventListener('pagehide',save);
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)save();});
+ new MutationObserver(()=>{for(const input of document.querySelectorAll('.sc-question-input')){input.inputMode='decimal';input.autocomplete='off';input.setAttribute('aria-label','输入数字');}}).observe(document.body,{childList:true,subtree:true});
+ window.hall={ready:false,save,storageKey:key,state:()=>values(),get storageError(){return storageError;}};
+})();
+
+    } catch (e) {
+      handleError(e);
+    }
+  </script>
   
       <script>
       const getBase85DecodeValue = (code) => {
