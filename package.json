@@ -2,6 +2,8 @@
   "name": "turbowarp-neural-network",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
+  "repository": "https://github.com/xiaoxuhui/turbowarp-neural-network",
   "type": "module",
   "packageManager": "pnpm@11.25.0",
   "scripts": {
